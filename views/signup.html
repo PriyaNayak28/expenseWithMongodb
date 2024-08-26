@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ExpenseXpert</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="header">Expense Tracker</h1>
+        <div class="form-container">
+            <form id="form" onsubmit="signup(event)">
+                <label for="name">Name:</label>
+                <input name="name" type="text" id="name" autocomplete="name" required>
+
+                <label for="email">Email:</label>
+                <input name="email" type="email" id="email" autocomplete="email" required>
+
+                <label for="password">Password:</label>
+                <input name="password" type="password" id="password" autocomplete="off" required>
+
+                <input class="submit" type="submit" id="btn" value="Sign Up">
+            </form>
+            <div class='links'>
+                <a class="link" href='./login.html'>Existing User? Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
+    <script src="./signup.js"></script>
+</body>
+
+</html>
