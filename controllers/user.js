@@ -1,8 +1,7 @@
-const User = require('../models/user'); // Mongoose User model
+const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Helper function to validate strings
 function isStringInvalid(string) {
     return !string || string.trim().length === 0;
 }
@@ -19,7 +18,6 @@ const signup = async (req, res) => {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // Create a new user document using Mongoose
         const newUser = new User({ name, email, password: hashedPassword });
 
         await newUser.save();
@@ -44,14 +42,12 @@ const login = async (req, res) => {
             return res.status(400).json({ message: 'Email or Password is missing', success: false });
         }
 
-        // Find user by email using Mongoose
         const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(404).json({ success: false, message: 'User does not exist' });
         }
 
-        // Compare hashed password
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (isMatch) {

@@ -11,9 +11,7 @@ const authenticate = async (req, res, next) => {
         }
 
         const decodedToken = jwt.verify(token, '#@focus28ABCDabcd');
-        console.log('userID >>>> ', decodedToken.userId);
 
-        // Use Mongoose to find the user by ID
         const user = await User.findById(decodedToken.userId);
 
         if (!user) {

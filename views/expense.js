@@ -67,35 +67,31 @@ window.addEventListener("DOMContentLoaded", () => {
 })
 
 function display(obj) {
-
-    if (localStorage.getItem(obj.desc) !== null) {
-        removeUserfromscreen(obj.desc)
+    if (localStorage.getItem(obj._id) !== null) {
+        removeUserfromscreen(obj._id)
     }
 
     const parentElem = document.getElementById('item-list');
-    const childElem = `<li id=${obj.id}>Rs ${obj.expense} - ${obj.desc} - ${obj.category}
-                        <button class='delete' onclick=deleteExpense(event,'${obj.id}')>Delete</button>
-
-                        </li>`
+    const childElem = `<li id=${obj._id}>Rs ${obj.expense} - ${obj.desc} - ${obj.category}
+                        <button class='delete' onclick=deleteExpense(event,'${obj._id}')>Delete</button>
+                        </li>`;
     parentElem.innerHTML = parentElem.innerHTML + childElem;
 }
 
-//delete button
 function deleteExpense(e, expenseId) {
-    console.log("hi1");
-    const token = localStorage.getItem('token')
-    console.log("token2", token);
     console.log("expenseId", expenseId);
+    const token = localStorage.getItem('token');
+
     axios.delete(`http://localhost:3000/expense/delete-expense/${expenseId}`, { headers: { "Authorization": token } })
         .then((response) => {
             console.log(response, "response");
-            removeUserfromscreen(expenseId)
+            removeUserfromscreen(expenseId);
         })
         .catch((err) => {
-            console.log("err3", err)
-        })
-
+            console.log("err3", err);
+        });
 }
+
 
 function showLeaderboard() {
     const inputElement = document.createElement("input")
@@ -117,16 +113,14 @@ function showLeaderboard() {
 
 }
 
-//remove user from screen
-function removeUserfromscreen(userId) {
+function removeUserfromscreen(expenseId) {
     const parentElem = document.getElementById('item-list');
-    const childElemtobedeleted = document.getElementById(userId);
+    const childElemtobedeleted = document.getElementById(expenseId);
     if (childElemtobedeleted) {
         parentElem.removeChild(childElemtobedeleted);
     }
-
-
 }
+
 
 document.getElementById('rzp-button1').onclick = async function (e) {
     const token = localStorage.getItem('token')

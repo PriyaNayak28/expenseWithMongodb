@@ -4,7 +4,6 @@ const Expense = require('../models/expense');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 
-
 const addExpense = async (req, res, next) => {
     try {
         if (!req.body.category) {
@@ -17,11 +16,9 @@ const addExpense = async (req, res, next) => {
             return res.status(400).json({ success: false, message: 'Parameters missing' });
         }
 
-        // Create a new expense document
         const newExpense = new Expense({ expense, desc, category, userId: req.user._id });
         await newExpense.save();
 
-        // Update the user's total expenses
         req.user.totalExpenses = (Number(req.user.totalExpenses) + Number(expense)).toString();
         await req.user.save();
         console.log(newExpense)
@@ -58,46 +55,40 @@ const getExpense = async (req, res, next) => {
 
 const deleteExpense = async (req, res) => {
     try {
-        console.log(req.params.expenseid, "req.params.expenseid")
         if (!req.params.expenseid) {
             return res.status(400).json({ err: 'ID is missing' });
         }
 
         const expenseId = req.params.expenseid;
-        console.log(type(expenseId), "typeExpenseId ");
         const expense = await Expense.findById(expenseId);
 
-        console.log(expense, expenseId, "remove this")
         if (!expense) {
             return res.status(404).json({ message: 'Expense not found' });
         }
 
-        const userId = expense.user;
-        console.log("userId", userId);
-        console.log(type(userId), "typeUserId ");
+        const userId = expense.userId;
         const user = await User.findById(userId);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        user.totalExpenses -= expense.amount;
+        user.totalExpenses = (Number(user.totalExpenses) - Number(expense.expense)).toString();
         await user.save();
 
         await Expense.deleteOne({ _id: expenseId });
 
-
         res.json({ message: 'Expense deleted and user totalExpenses updated' });
     } catch (err) {
+        console.error('Error deleting expense:', err.message);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
-
-
-
 
 module.exports = {
     addExpense,
     getExpense,
     deleteExpense
 };
+
+

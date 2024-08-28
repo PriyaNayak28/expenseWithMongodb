@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 
 const expenseSchema = new mongoose.Schema({
@@ -23,3 +24,4 @@ const expenseSchema = new mongoose.Schema({
 const Expense = mongoose.model('Expense', expenseSchema);
 
 module.exports = Expense;
+
